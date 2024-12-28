@@ -11,14 +11,15 @@ class Solution:
         q=deque([root])
 
         while q:
-            rightSide=None
-            qlen=len(q)
+            rightSide=None # Tracks the last node encountered at the current level
+            
+            qlen=len(q)# Number of nodes in the current level
             for i in range(qlen):
-                node=q.popleft()
+                node=q.popleft() # Dequeue the next node in the current level
                 if node:
-                    rightSide=node
-                    q.append(node.left)
-                    q.append(node.right)
+                    rightSide=node # Update `rightSide` to the current node
+                    q.append(node.left)# Add the left child to the queue for the next level
+                    q.append(node.right)# Add the right child to the queue for the next level
             if rightSide:
-                res.append(rightSide.val)
+                res.append(rightSide.val)# Add the value of the rightmost node to the result list
         return res
