@@ -3,7 +3,7 @@ class Solution:
     def validPath(self, n: int, edges: List[List[int]], source: int, destination: int) -> bool:
 
         adj_list = {i: [] for i in range(n)}
-        visited=set([source])
+        visited=set()
         for u,v in edges:
             adj_list[u].append(v)
             adj_list[v].append(u)
