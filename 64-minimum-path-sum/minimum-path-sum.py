@@ -1,16 +1,26 @@
 class Solution:
+    def solve(self,dp,i,j,grid):
+        if i==0 and j==0:
+            return grid[0][0]
+        if i<0 or j<0:
+            return float('inf')
+        if dp[i][j]!=-1:
+            return dp[i][j]
+        up=grid[i][j]+self.solve(dp,i-1,j,grid)
+        left=grid[i][j]+self.solve(dp,i,j-1,grid)
+        dp[i][j]=min(up,left)
+        return dp[i][j]
+
+
+        
+
     def minPathSum(self, grid: List[List[int]]) -> int:
-        m, n = len(grid), len(grid[0])  # Get grid dimensions
+        rows,cols=len(grid),len(grid[0])
+        dp=[[-1 for _ in range(cols)] for _ in range(rows)]
+        return self.solve(dp,rows-1,cols-1,grid)
 
-        for i in range(m):  # Loop over rows
-            for j in range(n):  # Loop over columns
-                if i == j == 0:
-                    continue  # Skip the starting cell
-                left_path = up_path = float('inf')  # Initialize paths
-                if i != 0:  # If not in the first row
-                    up_path = grid[i - 1][j] + grid[i][j]
-                if j != 0:  # If not in the first column
-                    left_path = grid[i][j - 1] + grid[i][j]
-                grid[i][j] = min(left_path, up_path)  # Take the minimum path sum
 
-        return grid[m - 1][n - 1]  # Return the minimum path sum to the bottom-right cell
+        
+        
+
+        
