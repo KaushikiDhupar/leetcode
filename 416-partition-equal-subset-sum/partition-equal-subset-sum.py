@@ -1,27 +1,31 @@
-class Solution:
-    def subsetsum(self,i,target,nums,dp):
-        if target==0:
-            return True
-        if i==0:
-            return nums[0]==target
-        if dp[i][target]!=-1:
-            return dp[i][target]
-        nottake=self.subsetsum(i-1,target,nums,dp)
-        take=False
-        if nums[i]<=target:
-            take=self.subsetsum(i-1,target-nums[i],nums,dp)
-        dp[i][target]=nottake or take
-        return dp[i][target]
+from typing import List
 
+class Solution:
     def canPartition(self, nums: List[int]) -> bool:
-        sum1=0
-        n=len(nums)
-        for j in range(n):
-            sum1+=nums[j]
-        if sum1%2!=0:
+        total = sum(nums)
+        n = len(nums)
+
+        if total % 2 != 0:
             return False
-        else:
-            target=sum1//2
-            dp=[[-1 for _ in range(target+1)] for _ in range(n)]
-            return self.subsetsum(n-1,target,nums,dp)
-        
+
+        target = total // 2
+        dp = [[False for _ in range(target + 1)] for _ in range(n)]
+
+        # Base Case: Sum 0 is always possible
+        for i in range(n):
+            dp[i][0] = True
+
+        # Base Case for the first element
+        if nums[0] <= target:
+            dp[0][nums[0]] = True
+
+        # Fill the dp table
+        for i in range(1, n):
+            for j in range(1, target + 1):
+                nottake = dp[i - 1][j]
+                take = False
+                if nums[i] <= j:
+                    take = dp[i - 1][j - nums[i]]
+                dp[i][j] = take or nottake
+
+        return dp[n - 1][target]
