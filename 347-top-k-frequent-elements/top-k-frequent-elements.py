@@ -8,7 +8,12 @@ class Solution:
             else:
                 d[i]=1
         sorted_dict = dict(sorted(d.items(), key=lambda item: item[1], reverse=True))
-        res = list(sorted_dict.keys())[:k]
+        for key in sorted_dict:
+            if k == 0:
+                break
+            res.append(key)
+            k -= 1
+
 
         return res
         
