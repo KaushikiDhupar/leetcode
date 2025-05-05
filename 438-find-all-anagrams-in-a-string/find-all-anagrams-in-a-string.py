@@ -1,26 +1,35 @@
-from typing import List
-
 class Solution:
     def findAnagrams(self, s: str, p: str) -> List[int]:
         if len(p) > len(s):
             return []
+
         
-        pcount, scount = {}, {}
+        m = len(p)
+        n = len(s)
         
-        for i in range(len(p)):
-            pcount[p[i]] = 1 + pcount.get(p[i], 0)
-            scount[s[i]] = 1 + scount.get(s[i], 0)
-        
-        res = [0] if scount == pcount else []
-        l = 0
-        
-        for r in range(len(p), len(s)):
-            scount[s[r]] = 1 + scount.get(s[r], 0)
-            scount[s[l]] -= 1
-            if scount[s[l]] == 0:
-                scount.pop(s[l])
-            l += 1
-            if scount == pcount:
-                res.append(l)
-        
+        freq_pat = [0] * 26
+        freq_wind = [0] * 26
+
+        # Count frequency of characters in pattern
+        for ch in p:
+            freq_pat[ord(ch) - ord('a')] += 1
+
+        # Initialize frequency of first window in text
+        for i in range(m):
+            freq_wind[ord(s[i]) - ord('a')] += 1
+
+        res=[]
+        if freq_wind == freq_pat:
+            res.append(0)
+
+        # Slide the window
+        for i in range(m, n):
+            freq_wind[ord(s[i]) - ord('a')] += 1                       # Add new character
+            freq_wind[ord(s[i - m]) - ord('a')] -= 1                   # Remove old character
+
+            if freq_wind == freq_pat:
+                res.append(i-m+1)
+
         return res
+
+        
