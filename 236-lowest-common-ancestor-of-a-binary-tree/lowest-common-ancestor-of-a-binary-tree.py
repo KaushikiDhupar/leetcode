@@ -15,5 +15,4 @@ class Solution:
         if right and left:
             return root
         return left if left else right
-
         
