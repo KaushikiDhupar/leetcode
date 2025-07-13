@@ -1,41 +1,33 @@
-from collections import deque
-
-'''
-We are using q1 as the main stack —
-it always holds the current stack elements in correct order (top at front).
-During push(x), we temporarily use q2 to rearrange elements.
-'''
-
+from collections import deque 
 class MyStack:
-    # This is a push-costly approach where push will have O(n) time,
-    # and pop and top will have O(1) time.
 
     def __init__(self):
-        self.q1 = deque()  # main queue that always has the top element at q1[0]
-        self.q2 = deque()  # helper queue used during the push operation
+        self.q=deque()
 
     def push(self, x: int) -> None:
-        self.q2.append(x)  # append to helper queue first
-
-        # Move all elements from q1 to q2 to maintain stack order
-        while self.q1:
-            self.q2.append(self.q1.popleft())  # transfer elements from main to helper
-
+        self.q.append(x)
+    # This is a push-costly approach using only one queue.
+    # After each push, we rotate the queue to place the newest element at the front.
+        
+        for _ in range(len(self.q)-1):
+            self.q.append(self.q.popleft())
         '''
-        We swap so that:
-        - q1 always contains the current valid stack
-        - q2 becomes empty and ready for the next operation
+        After rotation:
+        - The most recently added element becomes the front of the queue.
+        - So it behaves like the top of a stack.
         '''
-        self.q1, self.q2 = self.q2, self.q1
 
     def pop(self) -> int:
-        return self.q1.popleft()  # remove and return the top element (front of q1)
+        return self.q.popleft()
+        
 
     def top(self) -> int:
-        return self.q1[0]  # return the top element without removing it
+        return self.q[0]
+        
 
     def empty(self) -> bool:
-        return not self.q1  # return True if q1 is empty, False otherwise
+        return not self.q
+        
 
 
 # Your MyStack object will be instantiated and called as such:
