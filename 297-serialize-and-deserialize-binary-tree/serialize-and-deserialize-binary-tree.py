@@ -5,14 +5,14 @@ class Codec:
         :rtype: str
         """
         res = []
-        def preorder(node):
+        def dfs(node):
             if not node:
                 res.append('N')
-            else:
-                res.append(str(node.val))
-                preorder(node.left)
-                preorder(node.right)
-        preorder(root)
+                return
+            res.append(str(node.val))
+            dfs(node.left)
+            dfs(node.right)
+        dfs(root)
         return ','.join(res)
 
     def deserialize(self, data):
