@@ -27,5 +27,6 @@ class Solution:
 
         if lh==rh: # i.e the subtree is a perfect binary tree
             return (2**lh)-1
-        return self.countNodes(root.left)+self.countNodes(root.right)+1
+        return self.countNodes(root.left)+self.countNodes(root.right)+1 # else recursivesly call the function again to find the 
+        # left subtree  where it is perfect binary tree and add it with right subtree and node where it is standing i.e 1 
         
