@@ -8,34 +8,47 @@ class TreeNode:
 
 class Solution:
     def deleteNode(self, root: Optional[TreeNode], key: int) -> Optional[TreeNode]:
-        if not root:
+        if root is None:
             return None
 
-        if key < root.val:
-            root.left = self.deleteNode(root.left, key)
-        elif key > root.val:
-            root.right = self.deleteNode(root.right, key)
-        else:
-            # Case 1: No child
-            if not root.left and not root.right:
-                return None
-            # Case 2: One child
-            elif not root.left:
-                return root.right
-            elif not root.right:
-                return root.left
-            # Case 3: Two children
+        if root.val == key:
+            return self.helper(root)
+
+        dummy = root
+        curr = root
+
+        while curr:
+            if key < curr.val:
+                if curr.left and curr.left.val == key:
+                    curr.left = self.helper(curr.left)
+                    break
+                else:
+                    curr = curr.left
             else:
-                # Find the inorder successor (smallest in right subtree)
-                successor = self.getMinValueNode(root.right)
-                root.val = successor.val  # Copy successor's value
-                # Delete the successor node
-                root.right = self.deleteNode(root.right, successor.val)
+                if curr.right and curr.right.val == key:
+                    curr.right = self.helper(curr.right)
+                    break
+                else:
+                    curr = curr.right
 
-        return root
+        return dummy
 
-    def getMinValueNode(self, node: TreeNode) -> TreeNode:
-        current = node
-        while current.left:
-            current = current.left
-        return current
+    def helper(self, node: TreeNode) -> Optional[TreeNode]:
+        # Case 1: No left child
+        if node.left is None:
+            return node.right
+        # Case 2: No right child
+        elif node.right is None:
+            return node.left
+        # Case 3: Two children
+        else:
+            # Find rightmost in left subtree
+            right_child = node.right
+            last_right = self.findLastRight(node.left)
+            last_right.right = right_child
+            return node.left
+
+    def findLastRight(self, node: TreeNode) -> TreeNode:
+        while node.right:
+            node = node.right
+        return node
