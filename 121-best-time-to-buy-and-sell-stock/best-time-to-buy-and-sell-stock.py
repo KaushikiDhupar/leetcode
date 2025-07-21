@@ -1,15 +1,10 @@
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
-        mini=float('inf') #initialize with mac value
-        n=len(prices)
+        mini=prices[0]
         profit=0
-        for i in range(n):
-            if mini>prices[i]:
-                mini=prices[i]
-            elif ((prices[i]-mini)>profit):
-                profit=prices[i]-mini
+        for i in range(len(prices)):
+            cost=prices[i]-mini
+            profit=max(profit,cost)
+            mini=min(mini,prices[i])
+
         return profit
-
-
-
-        
